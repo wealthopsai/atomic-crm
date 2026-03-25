@@ -60,7 +60,7 @@ export const SequenceMonitor = () => {
       let query = supabase
         .from("sequence_enrollments")
         .select(
-          "*, contacts(id, first_name, last_name, company_id, avatar), sequences(id, name, total_steps)",
+          "*, contacts(id, first_name, last_name, company_id, avatar, companies(id, name)), sequences(id, name, total_steps)",
         )
         .order("current_step_due", { ascending: true });
 
@@ -73,21 +73,7 @@ export const SequenceMonitor = () => {
 
       const { data, error } = await query;
       if (error) throw error;
-
-      const enriched: EnrollmentWithRelations[] = [];
-      for (const enrollment of data as EnrollmentWithRelations[]) {
-        let companyName: string | undefined;
-        if (enrollment.contacts?.company_id) {
-          const { data: company } = await supabase
-            .from("companies")
-            .select("name")
-            .eq("id", enrollment.contacts.company_id)
-            .single();
-          companyName = company?.name ?? undefined;
-        }
-        enriched.push({ ...enrollment, company_name: companyName });
-      }
-      return enriched;
+      return data as EnrollmentWithRelations[];
     },
   });
 
@@ -410,7 +396,7 @@ function EnrollmentRow({
           </div>
         </TableCell>
         <TableCell className="text-sm">
-          {enrollment.company_name ?? "—"}
+          {enrollment.contacts?.companies?.name ?? "—"}
         </TableCell>
         <TableCell>
           <Badge variant="outline">{enrollment.sequence_id ?? "—"}</Badge>

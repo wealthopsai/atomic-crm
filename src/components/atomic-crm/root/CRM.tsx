@@ -63,6 +63,7 @@ import { PipelineBoard } from "../wealthops/PipelineBoard";
 import { SequenceMonitor } from "../wealthops/SequenceMonitor";
 import { DailyCallList } from "../wealthops/DailyCallList";
 import { CallAnalytics } from "../wealthops/CallAnalytics";
+import { AnalyticsDashboard } from "../wealthops/AnalyticsDashboard";
 
 const defaultStore = localStorageStore(undefined, "CRM");
 
@@ -256,6 +257,7 @@ const DesktopAdmin = (props: CoreAdminProps) => {
         <Route path="/sequence-monitor" element={<SequenceMonitor />} />
         <Route path="/daily-calls" element={<DailyCallList />} />
         <Route path="/call-analytics" element={<CallAnalytics />} />
+        <Route path="/analytics" element={<AnalyticsDashboard />} />
       </CustomRoutes>
       <Resource name="deals" {...deals} />
       <Resource name="contacts" {...contacts} />
