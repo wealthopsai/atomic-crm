@@ -58,6 +58,9 @@ import { ContactListMobile } from "../contacts/ContactList.tsx";
 import { ContactShow } from "../contacts/ContactShow.tsx";
 import { CompanyShow } from "../companies/CompanyShow.tsx";
 import { NoteShowPage } from "../notes/NoteShowPage.tsx";
+import { DraftQueue } from "../wealthops/DraftQueue";
+import { PipelineBoard } from "../wealthops/PipelineBoard";
+import { SequenceMonitor } from "../wealthops/SequenceMonitor";
 
 const defaultStore = localStorageStore(undefined, "CRM");
 
@@ -246,6 +249,9 @@ const DesktopAdmin = (props: CoreAdminProps) => {
         <Route path={ProfilePage.path} element={<ProfilePage />} />
         <Route path={SettingsPage.path} element={<SettingsPage />} />
         <Route path={ImportPage.path} element={<ImportPage />} />
+        <Route path="/draft-queue" element={<DraftQueue />} />
+        <Route path="/pipeline-board" element={<PipelineBoard />} />
+        <Route path="/sequence-monitor" element={<SequenceMonitor />} />
       </CustomRoutes>
       <Resource name="deals" {...deals} />
       <Resource name="contacts" {...contacts} />

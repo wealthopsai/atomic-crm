@@ -23,6 +23,12 @@ const Header = () => {
     currentPath = "/companies";
   } else if (matchPath("/deals/*", location.pathname)) {
     currentPath = "/deals";
+  } else if (matchPath("/draft-queue", location.pathname)) {
+    currentPath = "/draft-queue";
+  } else if (matchPath("/pipeline-board", location.pathname)) {
+    currentPath = "/pipeline-board";
+  } else if (matchPath("/sequence-monitor", location.pathname)) {
+    currentPath = "/sequence-monitor";
   } else {
     currentPath = false;
   }
@@ -76,6 +82,21 @@ const Header = () => {
                     })}
                     to="/deals"
                     isActive={currentPath === "/deals"}
+                  />
+                  <NavigationTab
+                    label="Draft Queue"
+                    to="/draft-queue"
+                    isActive={currentPath === "/draft-queue"}
+                  />
+                  <NavigationTab
+                    label="Pipeline"
+                    to="/pipeline-board"
+                    isActive={currentPath === "/pipeline-board"}
+                  />
+                  <NavigationTab
+                    label="Sequences"
+                    to="/sequence-monitor"
+                    isActive={currentPath === "/sequence-monitor"}
                   />
                 </nav>
               </div>
