@@ -43,7 +43,7 @@ export const DraftQueue = () => {
       let query = supabase
         .from("email_drafts")
         .select(
-          "*, contacts(id, first_name, last_name, company_id, trigger_event, estimated_aum, avatar)",
+          "*, contacts(id, first_name, last_name, company_id, trigger_event, estimated_aum, avatar, companies(id, name))",
         )
         .order("created_at", { ascending: true });
 
@@ -56,21 +56,7 @@ export const DraftQueue = () => {
 
       const { data, error } = await query;
       if (error) throw error;
-
-      const draftsWithCompany: EmailDraftWithContact[] = [];
-      for (const draft of data as EmailDraftWithContact[]) {
-        let companyName: string | undefined;
-        if (draft.contacts?.company_id) {
-          const { data: company } = await supabase
-            .from("companies")
-            .select("name")
-            .eq("id", draft.contacts.company_id)
-            .single();
-          companyName = company?.name ?? undefined;
-        }
-        draftsWithCompany.push({ ...draft, company_name: companyName });
-      }
-      return draftsWithCompany;
+      return data as EmailDraftWithContact[];
     },
   });
 
@@ -84,7 +70,7 @@ export const DraftQueue = () => {
       let query = supabase
         .from("linkedin_drafts")
         .select(
-          "*, contacts(id, first_name, last_name, company_id, trigger_event, estimated_aum, avatar)",
+          "*, contacts(id, first_name, last_name, company_id, trigger_event, estimated_aum, avatar, companies(id, name))",
         )
         .order("created_at", { ascending: true });
 
@@ -314,9 +300,9 @@ function EmailDraftCard({
                   : "Unknown"}
               </CardTitle>
               <div className="flex flex-wrap gap-1 mt-1">
-                {draft.company_name && (
+                {draft.contacts?.companies?.name && (
                   <span className="text-sm text-muted-foreground">
-                    {draft.company_name}
+                    {draft.contacts.companies.name}
                   </span>
                 )}
                 {contact?.trigger_event && (

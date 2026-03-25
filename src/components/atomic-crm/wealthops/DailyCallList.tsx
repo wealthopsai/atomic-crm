@@ -100,28 +100,14 @@ export const DailyCallList = () => {
       const { data, error } = await supabase
         .from("call_briefs")
         .select(
-          "*, contacts(id, first_name, last_name, company_id, current_stage, trigger_event, estimated_aum, state, avatar, current_sequence, total_calls, last_touch_date, last_touch_type, next_action, next_action_date)",
+          "*, contacts(id, first_name, last_name, company_id, current_stage, trigger_event, estimated_aum, state, avatar, current_sequence, total_calls, last_touch_date, last_touch_type, next_action, next_action_date, companies(id, name))",
         )
         .eq("status", "pending")
         .order("scheduled_for", { ascending: true });
 
       if (error) throw error;
 
-      const briefsWithCompany: CallBrief[] = [];
-      for (const brief of data as CallBrief[]) {
-        let companyName: string | undefined;
-        if (brief.contact?.company_id) {
-          const { data: company } = await supabase
-            .from("companies")
-            .select("name")
-            .eq("id", brief.contact.company_id)
-            .single();
-          companyName = company?.name ?? undefined;
-        }
-        briefsWithCompany.push({ ...brief, company_name: companyName });
-      }
-
-      return briefsWithCompany.sort(
+      return (data as CallBrief[]).sort(
         (a, b) =>
           getPriorityOrder(a.call_priority) - getPriorityOrder(b.call_priority),
       );
@@ -134,7 +120,7 @@ export const DailyCallList = () => {
       const { data, error } = await supabase
         .from("call_logs")
         .select(
-          "*, contacts(id, first_name, last_name, company_id, current_stage, trigger_event, estimated_aum, state, avatar, current_sequence, total_calls, last_touch_date, last_touch_type, next_action, next_action_date)",
+          "*, contacts(id, first_name, last_name, company_id, current_stage, trigger_event, estimated_aum, state, avatar, current_sequence, total_calls, last_touch_date, last_touch_type, next_action, next_action_date, companies(id, name))",
         )
         .gte("called_at", getStartOfToday())
         .order("called_at", { ascending: false });
@@ -300,9 +286,9 @@ function CallCard({
                     ? `${contact.first_name} ${contact.last_name}`
                     : "Unknown"}
                 </CardTitle>
-                {brief.company_name && (
+                {brief.contact?.companies?.name && (
                   <span className="text-sm text-muted-foreground">
-                    {brief.company_name}
+                    {brief.contact.companies.name}
                   </span>
                 )}
               </div>
@@ -553,27 +539,18 @@ function OutcomeSheet({
         contactUpdate.current_stage = stageUpdate;
       }
 
-      // Increment total_calls via RPC or raw update
-      await supabase
-        .rpc("increment_contact_calls", {
+      // Increment total_calls via RPC
+      const { error: rpcError } = await supabase.rpc(
+        "increment_contact_calls",
+        {
           p_contact_id: contactId,
-        })
-        .then(({ error }) => {
-          // If RPC doesn't exist, fall back to direct update
-          if (error) {
-            return supabase
-              .from("contacts")
-              .update({
-                ...contactUpdate,
-                total_calls: (brief.contact?.total_calls ?? 0) + 1,
-              })
-              .eq("id", contactId);
-          }
-          return supabase
-            .from("contacts")
-            .update(contactUpdate)
-            .eq("id", contactId);
-        });
+        },
+      );
+      if (rpcError) {
+        console.error("Failed to increment call count:", rpcError);
+      }
+
+      await supabase.from("contacts").update(contactUpdate).eq("id", contactId);
 
       // 5. Insert event
       await supabase.from("events").insert({

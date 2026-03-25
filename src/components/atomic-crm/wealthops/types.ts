@@ -88,17 +88,16 @@ export interface DraftContact {
   trigger_event: string | null;
   estimated_aum: string | null;
   avatar: { src: string } | null;
+  companies?: { id: number; name: string } | null;
 }
 
 export interface EnrollmentWithRelations extends SequenceEnrollment {
   contacts: DraftContact | null;
   sequences: Sequence | null;
-  company_name?: string;
 }
 
 export interface EmailDraftWithContact extends EmailDraft {
   contacts: DraftContact | null;
-  company_name?: string;
 }
 
 export interface LinkedInDraftWithContact extends LinkedInDraft {
@@ -111,6 +110,7 @@ export const PIPELINE_STAGES = [
   "researched",
   "first_touch_active",
   "replied_positive",
+  "replied_negative",
   "meeting_booked",
   "meeting_completed",
   "proposal_sent",
@@ -140,7 +140,6 @@ export interface CallBrief {
   call_log_id: number | null;
   // joined
   contact?: ContactSummary;
-  company_name?: string;
 }
 
 export interface CallLog {
@@ -183,6 +182,7 @@ export interface ContactSummary {
   last_touch_type: string | null;
   next_action: string | null;
   next_action_date: string | null;
+  companies?: { id: number; name: string } | null;
 }
 
 export interface HourStats {
@@ -209,4 +209,11 @@ export interface SummaryStats {
   connectRate: number;
   meetingsBooked: number;
   avgCallsPerMeeting: number | null;
+}
+
+export interface LinkedInDraftRow {
+  id: number;
+  draft_type: string;
+  status: string;
+  created_at: string;
 }
