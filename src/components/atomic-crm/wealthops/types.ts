@@ -120,3 +120,93 @@ export const PIPELINE_STAGES = [
 ] as const;
 
 export type PipelineStage = (typeof PIPELINE_STAGES)[number];
+
+export interface CallBrief {
+  id: number;
+  contact_id: number;
+  sequence_id: string | null;
+  sequence_step: number | null;
+  call_priority: "hot" | "normal" | "low";
+  scheduled_for: string | null;
+  prospect_summary: string | null;
+  trigger_summary: string | null;
+  opener: string | null;
+  talking_points: string[] | null;
+  objection_handlers: Array<{ objection: string; response: string }> | null;
+  voicemail_script: string | null;
+  proposed_next_step: string | null;
+  status: "pending" | "completed" | "skipped";
+  created_at: string;
+  call_log_id: number | null;
+  // joined
+  contact?: ContactSummary;
+  company_name?: string;
+}
+
+export interface CallLog {
+  id: number;
+  contact_id: number;
+  call_brief_id: number | null;
+  sequence_id: string | null;
+  sequence_step: number | null;
+  called_at: string;
+  duration_seconds: number | null;
+  outcome:
+    | "connected_positive"
+    | "connected_not_interested"
+    | "voicemail"
+    | "no_answer"
+    | "callback_requested"
+    | "wrong_number";
+  notes: string | null;
+  callback_scheduled_for: string | null;
+  next_action_triggered: string | null;
+  logged_by: string;
+  created_at: string;
+  // joined
+  contact?: ContactSummary;
+}
+
+export interface ContactSummary {
+  id: number;
+  first_name: string;
+  last_name: string;
+  company_id: number | null;
+  current_stage: string | null;
+  trigger_event: string | null;
+  estimated_aum: string | null;
+  state: string | null;
+  avatar: { src?: string } | null;
+  current_sequence: string | null;
+  total_calls: number;
+  last_touch_date: string | null;
+  last_touch_type: string | null;
+  next_action: string | null;
+  next_action_date: string | null;
+}
+
+export interface HourStats {
+  hour: number;
+  count: number;
+  connectRate: number;
+}
+
+export interface DayStats {
+  day: number;
+  dayLabel: string;
+  count: number;
+  connectRate: number;
+}
+
+export interface OutcomeStats {
+  outcome: string;
+  count: number;
+  percentage: number;
+}
+
+export interface SummaryStats {
+  totalCalls: number;
+  connectRate: number;
+  meetingsBooked: number;
+  avgCallsPerMeeting: number | null;
+}

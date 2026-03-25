@@ -29,6 +29,10 @@ const Header = () => {
     currentPath = "/pipeline-board";
   } else if (matchPath("/sequence-monitor", location.pathname)) {
     currentPath = "/sequence-monitor";
+  } else if (matchPath("/daily-calls", location.pathname)) {
+    currentPath = "/daily-calls";
+  } else if (matchPath("/call-analytics", location.pathname)) {
+    currentPath = "/call-analytics";
   } else {
     currentPath = false;
   }
@@ -97,6 +101,16 @@ const Header = () => {
                     label="Sequences"
                     to="/sequence-monitor"
                     isActive={currentPath === "/sequence-monitor"}
+                  />
+                  <NavigationTab
+                    label="Calls"
+                    to="/daily-calls"
+                    isActive={currentPath === "/daily-calls"}
+                  />
+                  <NavigationTab
+                    label="Call Analytics"
+                    to="/call-analytics"
+                    isActive={currentPath === "/call-analytics"}
                   />
                 </nav>
               </div>
