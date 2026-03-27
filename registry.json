@@ -42,6 +42,58 @@
           "type": "registry:component"
         },
         {
+          "path": "src/components/atomic-crm/wealthops/types.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/sequenceUtils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/pipelineUtils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/draftQueueUtils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/callUtils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/callAnalyticsUtils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/analyticsUtils.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/SequenceMonitor.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/PipelineBoard.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/DraftQueue.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/DailyCallList.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/CallAnalytics.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/atomic-crm/wealthops/AnalyticsDashboard.tsx",
+          "type": "registry:component"
+        },
+        {
           "path": "src/components/atomic-crm/tasks/tasksPredicate.ts",
           "type": "registry:component"
         },
