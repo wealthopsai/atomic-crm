@@ -29,7 +29,7 @@ import {
 } from "./draftQueueUtils";
 
 export const DraftQueue = () => {
-  const [statusFilter, setStatusFilter] = useState("draft");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [sequenceFilter, setSequenceFilter] = useState("all");
   const queryClient = useQueryClient();
 
@@ -122,7 +122,7 @@ export const DraftQueue = () => {
 
   const handleEmailAction = async (
     draftId: number,
-    action: "approved" | "rejected" | "edited",
+    action: "approved" | "rejected" | "edited" | "flagged",
     updates?: { subject?: string; body?: string; marshall_notes?: string },
   ) => {
     const updateData: Record<string, unknown> = {
@@ -183,6 +183,7 @@ export const DraftQueue = () => {
           <SelectContent>
             <SelectItem value="all">All Statuses</SelectItem>
             <SelectItem value="draft">Draft</SelectItem>
+            <SelectItem value="flagged">Flagged</SelectItem>
             <SelectItem value="approved">Approved</SelectItem>
             <SelectItem value="sent">Sent</SelectItem>
             <SelectItem value="rejected">Rejected</SelectItem>
@@ -269,7 +270,7 @@ function EmailDraftCard({
   draft: EmailDraftWithContact;
   onAction: (
     id: number,
-    action: "approved" | "rejected" | "edited",
+    action: "approved" | "rejected" | "edited" | "flagged",
     updates?: { subject?: string; body?: string; marshall_notes?: string },
   ) => void;
 }) {
@@ -327,6 +328,11 @@ function EmailDraftCard({
                 RETAIL COMM
               </Badge>
             )}
+            {draft.status === "flagged" && (
+              <Badge className="bg-yellow-500 text-white hover:bg-yellow-600">
+                FLAGGED
+              </Badge>
+            )}
             <Badge
               variant={draft.compliance_cleared ? "default" : "destructive"}
             >
@@ -378,6 +384,19 @@ function EmailDraftCard({
             </p>
           )}
         </div>
+
+        {draft.compliance_flags && draft.compliance_flags.length > 0 && (
+          <div className="rounded-md border border-yellow-400 bg-yellow-50 dark:bg-yellow-950 p-3 space-y-1">
+            <p className="text-xs font-semibold text-yellow-800 dark:text-yellow-300">
+              Compliance Flags
+            </p>
+            {draft.compliance_flags.map((flag, i) => (
+              <p key={i} className="text-xs text-yellow-800 dark:text-yellow-200">
+                {flag}
+              </p>
+            ))}
+          </div>
+        )}
 
         <div>
           <label className="text-xs font-medium text-muted-foreground">
