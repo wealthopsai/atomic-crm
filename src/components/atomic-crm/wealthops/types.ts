@@ -9,13 +9,15 @@ export interface EmailDraft {
   body: string | null;
   from_address: string | null;
   to_address: string | null;
-  status: "draft" | "approved" | "sent" | "rejected" | "edited";
+  status: "draft" | "approved" | "sent" | "rejected" | "edited" | "flagged";
   created_at: string;
   reviewed_at: string | null;
   sent_at: string | null;
   marshall_notes: string | null;
   retail_comm_flag: boolean | null;
   compliance_cleared: boolean | null;
+  compliance_status: string | null;
+  compliance_flags: string[] | null;
 }
 
 export interface LinkedInDraft {
