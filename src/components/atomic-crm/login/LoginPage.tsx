@@ -112,6 +112,7 @@ export const LoginPage = (props: { redirectTo?: string }) => {
                   label="ra.auth.email"
                   source="email"
                   type="email"
+                  placeholder="marshall@preceptlegacy.com"
                   validate={required()}
                 />
                 <TextInput
