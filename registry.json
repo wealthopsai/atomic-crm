@@ -54,6 +54,10 @@
           "type": "registry:component"
         },
         {
+          "path": "src/components/atomic-crm/wealthops/enrollmentUtils.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "src/components/atomic-crm/wealthops/draftQueueUtils.ts",
           "type": "registry:component"
         },
